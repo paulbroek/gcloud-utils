@@ -152,13 +152,15 @@ def assign_cols(df, unnestList) -> Tuple[List[str], pd.DataFrame]:
 
 
 def reduce_view(df) -> pd.DataFrame:
-    """ return a compact view of df, since BigQuery returns 19 columns, and nested dictionaries """
+    """ return a compact view of df, since BigQuery returns 19 columns and nested dictionaries """
 
     df = df.copy()
 
     df['usage_duration'] = df['usage_end_time'] - df['usage_start_time']
     df['usage_secs'] = df['usage_duration'].dt.total_seconds()
     df['usage_hours'] = df['usage_secs'] / 3600
+
+    df['cumCost'] = df['cost'].cumsum()
 
     # several ways to create nested columns, see unnest_dict()
     # df['project_id'] = df['project'].map(lambda x: x['id'])
@@ -170,7 +172,7 @@ def reduce_view(df) -> pd.DataFrame:
     addedCols, df = assign_cols(df, unnestList)
 
     # what cols to keep
-    keepCols = addedCols + ['usage_hours', 'cost']
+    keepCols = addedCols + ['usage_hours', 'cost', 'cumCost']
     # view = df.loc[:, ['project_id', 'usage_hours','cost']]
     view = df.loc[:, keepCols]
 
@@ -198,6 +200,7 @@ class ArgParser():
         )
 
         return CLI
+
 
 if __name__ == "__main__":
 
