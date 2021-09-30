@@ -161,10 +161,34 @@ gcloud compute disk list
 Increase the disk size of an instance
 
 ```bash
-gcloud compute disks resize 'ubu20' --zone 'us-central1-a' --size 21
+gcloud compute disks resize 'ubu20' --zone 'us-central1-a' --size 22
 ```
 
-## 5 Billing
+## 5 Port forwarding
+
+```bash
+# Create a new firewall rule that allows INGRESS tcp:8080 with VMs containing tag 'allow-tcp-8080'
+gcloud compute firewall-rules create rule-allow-tcp-8080 --source-ranges 0.0.0.0/0 --target-tags allow-tcp-8080 --allow tcp:8080
+gcloud compute firewall-rules create rule-allow-tcp-8888 --source-ranges 0.0.0.0/0 --target-tags allow-tcp-8888 --allow tcp:8888
+
+# list your VMs
+gcloud compute instances list
+
+# Add the 'allow-tcp-8080' tag to a VM named VM_NAME
+gcloud compute instances add-tags VM_NAME --tags allow-tcp-8080
+gcloud compute instances add-tags VM_NAME --tags allow-tcp-8888
+
+# remove a rule
+gcloud compute instances remove-tags VM_NAME --tags allow-tcp-8888
+
+# If you want to list all the GCE firewall rules
+gcloud compute firewall-rules list
+
+# listing active rules by instance?
+# --> not possible yet. use GUI console, press on the three dots and click 'View network details'
+```
+
+## 6 Billing
 
 **These steps are important to keep your Compute Engine costs low**
 

@@ -33,3 +33,50 @@ Setting the environment variable
 ```bash
 export GOOGLE_APPLICATION_CREDENTIALS="/home/paul/Downloads/service-account-file.json"
 ```
+
+## 2 Cuda and GPU usage
+
+Sometimes you have to reinstall Cuda when using a new GPU type
+
+
+### 2.1 Uninstall cuda from Ubuntu 
+
+```bash
+sudo apt-get -y purge nvidia*
+sudo apt-get autoremove -y
+sudo apt-get autoclean
+sudo rm -rf /usr/local/cuda*
+```
+
+### 2.2 Install cuda
+
+From Google Cloud [docs](https://cloud.google.com/compute/docs/gpus/install-drivers-gpu#ubuntu-driver-steps)
+
+```bash
+cd /tmp
+curl -O https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/cuda-ubuntu2004.pin
+sudo mv cuda-ubuntu2004.pin /etc/apt/preferences.d/cuda-repository-pin-600
+sudo apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/7fa2af80.pub
+sudo add-apt-repository "deb https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/ /"
+sudo apt update
+sudo apt -y install cuda
+```
+
+### 2.3 Install cudnn
+
+More [help](https://jayden-chua.medium.com/quick-install-cuda-on-google-cloud-compute-6c85447f86a1)
+
+First get `cudnn-11.4-linux-x64-v8.2.4.15.tgz` file from nvidia, though user account.
+Or copy from your ~/Downloads folder - through `gsutil` - to the VM
+Then:
+```bash
+# unpack
+cd ~/Downloads/
+tar -xzvf cudnn-11.4-linux-x64-v8.2.4.15.tgz
+```
+Copy the following files into the CUDA Toolkit directory.
+```bash
+sudo cp cuda/include/cudnn*.h /usr/local/cuda/include 
+sudo cp -P cuda/lib64/libcudnn* /usr/local/cuda/lib64 
+sudo chmod a+r /usr/local/cuda/include/cudnn*.h /usr/local/cuda/lib64/libcudnn*
+```
