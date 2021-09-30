@@ -2,6 +2,7 @@
     bq_extract.py
 
     extract tables from Big Query to pandas dataframe format
+    like: billing
 """
 
 from typing import Optional, Union, Tuple, List
@@ -103,6 +104,12 @@ def to_pandas(res, ixCol: Optional='export_time') -> pd.DataFrame:
         df.index = df[ixCol]
 
     return df
+
+
+def cost_by_month(df) -> pd.DataFrame:
+
+    return df
+
 
 def unnest_dict(df, col, key, assign=True) -> Union[str, Tuple[str, pd.Series]]:
     """ converts 
@@ -215,8 +222,9 @@ if __name__ == "__main__":
     client = bigquery.Client()
 
     # ress = query_billing(client, cols='*', n=100_000)
+    ress = query_billing_nonzero(client, cols='*', orderBy='usage_end_time', n=100_000)
     # ress = query_billing_nonzero(client, cols='*', orderBy='export_time', n=100_000)
-    ress = query_billing_nonzero(client, cols='*', orderBy='cost', n=100_000)
+    # ress = query_billing_nonzero(client, cols='*', orderBy='cost', n=100_000)
     # ress = query_billing(client, cols='export_time, cost', n=100_000)
 
     # df = to_pandas(ress, ixCol='export_time')
@@ -231,4 +239,31 @@ if __name__ == "__main__":
     logger.info(f'total cost is {total_cost:.2f} $')
 
     view = reduce_view(df)
-    view = view.sort_values('cost')
+    # view = view.sort_values('cost')
+    view = view.sort_index()
+
+    # get a summary of top (summed) costs
+    by_service = view.groupby('service_description')
+    by_description = view.groupby('sku_description')
+    # costs = by_description['cost'].sum().sort_values()
+    costs = by_description.agg({'usage_hours': ['sum', 'max'], 'cost': 'sum'})
+    costs = costs.sort_values(('cost','sum'))
+    # optional flattening of column names
+    costs.columns = costs.columns.map('_'.join).str.strip('_')
+
+    # display floats, not scientific numbers
+    pd.set_option('display.float_format', lambda x: '%.5f' % x)
+    costs['cost_sum_pct'] = costs['cost_sum'] / costs['cost_sum'].sum()
+
+    # usgcols = ['usage_hours_sum', 'usage_hours_max']
+    usgcols = costs.filter(regex='^usage.+').columns
+    costs[usgcols] = costs[usgcols].astype(int)
+
+    # create cols with stars that visualize the pct
+    costs['cost_pct'] = '*' # choose any char
+    star_width = 10
+    nstar = pd.cut(costs.cost_sum_pct, star_width, labels=range(star_width))
+    costs['cost_pct'] = costs['cost_pct'].str.repeat(nstar)
+
+    with pd.option_context('display.colheader_justify','left'):
+        print('\n', costs)

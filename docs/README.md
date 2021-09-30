@@ -15,6 +15,9 @@ If you need an 'expensive' machine like one with GPU / TPU, do the following
 - Stop the instance, now it costs you 0 cents
 - _All machine types are charged a minimum of 10 minutes. For example, if you run your virtual machine for 2 minutes, you will be billed for 10 minutes of usage._
 - More pricing [info](https://blog.optimal.io/CPO200-Pricing-Questions-Google-Cloud/)
+- Use Preemtipble VM instances (Google's name for spot instances), where possible. They come with discount but disappear after 24 hours, and can shutdown any time (though rarely)
+	[info](https://cloud.google.com/compute/docs/instances/preemptible)
+- 
 
 ### 1.2 SSH
 
