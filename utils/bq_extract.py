@@ -45,7 +45,7 @@ def query_stackoverflow(cl):
     return query_job.result()  # Waits for job to complete.
 
 
-@timet
+# @timet
 def query_billing_all(cl):
 
     query_job = cl.query(
@@ -59,7 +59,7 @@ def query_billing_all(cl):
     return query_job.result()
 
 
-@timet
+# @timet
 def query_billing(cl, cols='*', orderBy='export_time', n=100_000):
 
     assert isinstance(cols, str)
@@ -77,7 +77,7 @@ def query_billing(cl, cols='*', orderBy='export_time', n=100_000):
     return query_job.result()
 
 
-@timet
+# @timet
 def query_billing_nonzero(cl, cols='*', orderBy='export_time', n=100_000):
     """ query all nonzero billing rows """
 
@@ -97,7 +97,7 @@ def query_billing_nonzero(cl, cols='*', orderBy='export_time', n=100_000):
     return query_job.result()
 
 
-@timet
+# @timet
 def to_pandas(res, ixCol: Optional='export_time') -> pd.DataFrame:
 
     df = res.to_dataframe()
