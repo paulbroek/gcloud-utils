@@ -127,7 +127,7 @@ if __name__ == '__main__':
     log_fmt     = "%(asctime)s - %(module)-16s - %(lineno)-4s - %(funcName)-16s - %(levelname)-7s - %(message)s"  #name
     log_level   = getattr(logging, args.verbosity.upper())
     # logger      = setup_logger(cmdLevel=log_level, saveFile=args.file, savePandas=1, fmt=log_fmt, multiLine=1)
-    logger      = logging.basicConfig(level=log_level)
+    logging.basicConfig(level=log_level)
 
     client      = bigquery.Client()
     monitorb    = MonitorBilling()
