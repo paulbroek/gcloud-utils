@@ -3,7 +3,7 @@ services:
 
   monitor_billing:
     restart: unless-stopped
-    image: python_feed_env # py39_feed_env
+    image: gcloud_env
     container_name: monitor_billing
     # network_mode:  host
     command:
