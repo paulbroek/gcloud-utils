@@ -87,12 +87,14 @@ sudo chmod a+r /usr/local/cuda/include/cudnn*.h /usr/local/cuda/lib64/libcudnn*
 ### 3.1 Build docker image to run monitor_billing as container
 
 ```bash
-DOCKER_BUILDKIT=1 docker build -f ~/repos/gcloud-utils/Dockerfile -t gcloud_env --ssh github_ssh_key=/home/paul/.ssh/git_ssh_id_rsa .
+docker build -f ~/repos/gcloud-utils/Dockerfile -t gcloud_env  .
 ```
 
 ### 3.2 Copy gcloud credentials
-
-
+```bash
+vim ~/Downloads/service-account-file.json
+# copy credentials from home pc into this file
+```
 
 ### 3.3 Run container
 

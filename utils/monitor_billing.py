@@ -29,11 +29,23 @@ import pandas as pd
 from google.cloud import bigquery
 
 # from rarc.utils.decorators import timeit, timet
-from rarc.utils.log import setup_logger
+# from rarc.utils.log import setup_logger
 from rarc.slack_notifications import slack_message
 from bq_extract import query_billing_nonzero, to_pandas
 
 logger = logging.getLogger(__name__) # 'root' 'main'
+
+
+from slackclient import SlackClient
+
+token = 'SLACK_API_KEY'
+sc = SlackClient(token)
+    
+# slack_message('test123', '#general')
+def slack_message(message, channel):
+    sc.api_call('chat.postMessage', channel=channel, 
+                text=message, username='Paul',
+                icon_emoji=':robot_face:')
 
 
 class MonitorBilling:
@@ -114,9 +126,10 @@ if __name__ == '__main__':
 
     log_fmt     = "%(asctime)s - %(module)-16s - %(lineno)-4s - %(funcName)-16s - %(levelname)-7s - %(message)s"  #name
     log_level   = getattr(logging, args.verbosity.upper())
-    logger      = setup_logger(cmdLevel=log_level, saveFile=args.file, savePandas=1, fmt=log_fmt, multiLine=1)
+    # logger      = setup_logger(cmdLevel=log_level, saveFile=args.file, savePandas=1, fmt=log_fmt, multiLine=1)
+    logger      = logging.basicConfig(level=log_level)
 
     client      = bigquery.Client()
     monitorb    = MonitorBilling()
-    
+
     monitorb.run()
