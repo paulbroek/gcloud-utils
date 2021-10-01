@@ -80,3 +80,22 @@ sudo cp cuda/include/cudnn*.h /usr/local/cuda/include
 sudo cp -P cuda/lib64/libcudnn* /usr/local/cuda/lib64 
 sudo chmod a+r /usr/local/cuda/include/cudnn*.h /usr/local/cuda/lib64/libcudnn*
 ```
+
+
+## 3 docker
+
+### 3.1 Build docker image to run monitor_billing as container
+
+```bash
+DOCKER_BUILDKIT=1 docker build -f ~/repos/gcloud-utils/Dockerfile -t gcloud_env --ssh github_ssh_key=/home/paul/.ssh/git_ssh_id_rsa .
+```
+
+### 3.2 Copy gcloud credentials
+
+
+
+### 3.3 Run container
+
+```bash
+docker-compose up -d
+```

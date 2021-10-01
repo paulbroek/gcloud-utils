@@ -13,7 +13,8 @@ WORKDIR /
 COPY requirements.txt /tmp
 RUN pip install -r /tmp/requirements.txt
 
-RUN pip install --force-reinstall --upgrade git+https://github.com/paulbroek/rarc.git
+# or remove rarc dependency by creating a slack-utils repo
+RUN --mount=type=ssh,id=github_ssh_key pip install --force-reinstall --upgrade git+https://github.com/paulbroek/rarc.git
 
 ENV AM_I_IN_A_DOCKER_CONTAINER Yes
 
