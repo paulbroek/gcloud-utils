@@ -57,13 +57,13 @@ source ~/.zshrc
 
 ## 2 Managing images
 
-### 2.1 list popular machine images
+### 2.1 List popular machine images
 
 ```bash
 gcloud compute images list
 ```
 
-### 2.2 list your machine images
+### 2.2 List your machine images
 
 ```bash
 gcloud beta compute machine-images list
@@ -86,12 +86,12 @@ gcloud beta compute machine-images delete ubuntu20-basic-1
 ### 2.5 Costs
 
 The cost of having a custom machine image is $0.050 per GB per month. So a 15GB image costs you 0.75$ per month. Therefore, keep just one image and delete the older one.
-There are ways to save images to Cloud Storage (costing 2 cents per GB per month), see [this](https://stackoverflow.com/questions/59723073/how-to-download-a-google-cloud-compute-engine-vm-instance)
+There are ways to save images to Cloud Storage (costing 2 cents per GB per month), see [this](https://stackoverflow.com/questions/59723073/how-to-download-a-google-cloud-compute-engine-vm-instance)  
 And you can then copy the image to a local machine. Instructions of this process:  
 
-1. Export image to Cloud Storage with `gcloud compute images export`:
-	`gcloud compute images export \
-    --destination-uri gs://ob-train-129933/my-image-file.tar.gz \
+1. Export image to Cloud Storage with `gcloud compute images export`:  
+	`gcloud compute images export  
+    --destination-uri gs://ob-train-129933/my-image-file.tar.gz  
     --image 'conda-plus-private-repos-rclone2' `
 
 2. Download the image to your local machine with `gsutil cp`:
