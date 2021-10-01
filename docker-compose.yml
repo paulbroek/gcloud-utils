@@ -18,4 +18,4 @@ services:
 
     volumes:
      - /home/${USER}/repos/gcloud-utils/utils:/mnt_src
-     - /home/${USER}/Downloads/service-account-file.json:/google_config:ro
+     - /home/${USER}/Downloads/service-account-file.json:/google_config/service-account-file.json:ro
