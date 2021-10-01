@@ -91,15 +91,15 @@ And you can then copy the image to a local machine. Instructions of this process
 
 1. Export image to Cloud Storage with `gcloud compute images export`:  
 	```bash
-	gcloud compute images export  
-    --destination-uri gs://ob-train-129933/my-image-file.tar.gz  
+	gcloud compute images export  \
+    --destination-uri gs://ob-train-129933/my-image-file.tar.gz  \
     --image 'conda-plus-private-repos-rclone2'
 	```
 
 2. Download the image to your local machine with `gsutil cp`:  
 	`gsutil cp gs://ob-train-129933/my-image-file.tar.gz /local/path/to/file`
 
-But best is to keep image size low, increase disk size in very small 1 or 2 GB steps, and use only one image.
+But best is to keep image size low, increase disk size in very small 1 or 2 GB steps, and keep only one image.
 
 ## 3 Managing instances
 
@@ -130,7 +130,7 @@ gcloud beta compute instances start 'ubu20' --zone 'us-central1-a'
 
 ### 4.1 Working with the `gsutil` tool
 
-More Medium [help](https://medium.com/google-cloud/google-cloud-storage-tutorial-part-1-aee81f9d3247)
+More Medium [help](https://medium.com/google-cloud/google-cloud-storage-tutorial-part-1-aee81f9d3247)  
 Official [help](https://cloud.google.com/storage/docs/gsutil)
  
 ```bash
