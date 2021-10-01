@@ -11,12 +11,12 @@ services:
             - -c
             - |
               cd /mnt_src
-              python -c 'while 1: pass'
-              # python monitor_billing.py  --usd_threshold 0  --seconds 3  -v info
+              export GOOGLE_APPLICATION_CREDENTIALS="/google_config/service-account-file.json" && python monitor_billing.py  --usd_threshold 0  --seconds 3  -v info
+              # python -c 'while 1: pass'
 
-    environment:
-     - GOOGLE_APPLICATION_CREDENTIALS="/google_config/service-account-file.json"
+    # environment:
+    #  - GOOGLE_APPLICATION_CREDENTIALS="/google_config/service-account-file.json"
 
     volumes:
      - /home/${USER}/repos/gcloud-utils/utils:/mnt_src
-     - /home/${USER}/Downloads/service-account-file.json:/google_config/service-account-file.json:ro
+     - /home/${USER}/Downloads/service-account-file.json:/google_config/service-account-file.json
