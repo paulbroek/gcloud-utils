@@ -1,2 +1,4 @@
+slackclient==1.2.1
 # google-cloud-bigquery
 google-cloud-bigquery[bqstorage,pandas]
+pandas
