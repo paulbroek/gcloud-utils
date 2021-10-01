@@ -30,7 +30,7 @@ from google.cloud import bigquery
 
 # from rarc.utils.decorators import timeit, timet
 # from rarc.utils.log import setup_logger
-from rarc.slack_notifications import slack_message
+# from rarc.slack_notifications import slack_message
 from bq_extract import query_billing_nonzero, to_pandas
 
 logger = logging.getLogger(__name__) # 'root' 'main'
