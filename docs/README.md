@@ -160,7 +160,7 @@ gsutil -m rsync -r -d . gs://gwnewbucket
 See a list of available disks (some instance should be running)
 
 ```bash
-gcloud compute disk list
+gcloud compute disks list
 ```
 
 Increase the disk size of an instance

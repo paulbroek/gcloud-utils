@@ -3,6 +3,15 @@
 
     extract tables from Big Query to pandas dataframe format
     like: billing
+
+    more info on how to set up gcloud service account, see github.com/paulbroek/gcloud-utils/README.md
+
+    run file:
+
+        conda activate py38
+        export GOOGLE_APPLICATION_CREDENTIALS="/home/paul/Downloads/service-account-file.json" && ipy bq_extract.py -i
+
+    or add the environment variable to ~/.bashrc or ~/.zshrc
 """
 
 from typing import Optional, Union, Tuple, List
