@@ -131,7 +131,7 @@ gcloud beta compute instances start 'ubu20' --zone 'us-central1-a'
 ### 4.1 Working with the `gsutil` tool
 
 More Medium [help](https://medium.com/google-cloud/google-cloud-storage-tutorial-part-1-aee81f9d3247)  
-Official [help](https://cloud.google.com/storage/docs/gsutil)
+Official [docs](https://cloud.google.com/storage/docs/gsutil)
  
 ```bash
 # Create a bucket:
@@ -195,12 +195,12 @@ gcloud compute firewall-rules list
 
 ## 6 Billing
 
-**These steps are important to keep your Compute Engine costs low**
+***These steps are important to keep your Compute Engine costs low***
 
 Some things to set up:
 
 - Export billing to BigQuery. Follow: https://cloud.google.com/billing/docs/how-to/export-data-bigquery-setup 
-- Basically go to console.cloud.google.com -> Billing -> Billing export, and select one of three (currently I use middle option: `detailed usage cost`)
+- Basically go to console.cloud.google.com ⟶ Billing ⟶ Billing export, and select one of three (currently I use middle option: `detailed usage cost`)
 
 Things to be aware of:
 
