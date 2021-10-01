@@ -129,6 +129,8 @@ if __name__ == '__main__':
     # logger      = setup_logger(cmdLevel=log_level, saveFile=args.file, savePandas=1, fmt=log_fmt, multiLine=1)
     logging.basicConfig(level=log_level)
 
+    logger.info(f'{args=}')
+
     client      = bigquery.Client()
     monitorb    = MonitorBilling()
 
