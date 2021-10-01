@@ -22,10 +22,6 @@ import pandas as pd
 
 from google.cloud import bigquery
 
-from rarc.utils.decorators import timeit, timet
-from rarc.utils.log import setup_logger
-
-
 logger = logging.getLogger(__name__) # 'root' 'main'
 
 BILLING_TABLE_NAME = 'BILLING_TABLE_NAME'
@@ -219,6 +215,9 @@ class ArgParser():
 
 
 if __name__ == "__main__":
+    
+    from rarc.utils.decorators import timeit, timet
+    from rarc.utils.log import setup_logger
 
     parser      = ArgParser.get_parser()
     args        = parser.parse_args()
