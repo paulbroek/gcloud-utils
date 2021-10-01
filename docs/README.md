@@ -90,11 +90,13 @@ There are ways to save images to Cloud Storage (costing 2 cents per GB per month
 And you can then copy the image to a local machine. Instructions of this process:  
 
 1. Export image to Cloud Storage with `gcloud compute images export`:  
-	`gcloud compute images export  
+	```bash
+	gcloud compute images export  
     --destination-uri gs://ob-train-129933/my-image-file.tar.gz  
-    --image 'conda-plus-private-repos-rclone2' `
+    --image 'conda-plus-private-repos-rclone2'
+	```
 
-2. Download the image to your local machine with `gsutil cp`:
+2. Download the image to your local machine with `gsutil cp`:  
 	`gsutil cp gs://ob-train-129933/my-image-file.tar.gz /local/path/to/file`
 
 But best is to keep image size low, increase disk size in very small 1 or 2 GB steps, and use only one image.
