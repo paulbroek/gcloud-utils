@@ -112,7 +112,7 @@ gcloud compute instances list
 ### 3.2 Stop an instance / all instances
 
 ```bash
-gcloud beta compute instances stop 'ubu20' --zone 'us-central1-a'
+gcloud compute instances stop 'ubu20' --zone 'us-central1-a'
 ```
 
 Iterate over list? CLI does not have a 'stop all' method
@@ -123,7 +123,15 @@ Iterate over list? CLI does not have a 'stop all' method
 ### 3.3 (Re)start an instance
 
 ```bash
-gcloud beta compute instances start 'ubu20' --zone 'us-central1-a'
+gcloud compute instances start 'ubu20' --zone 'us-central1-a'
+```
+
+### 3.4 Delete an instance
+Delete an instance, since stopped instances still use disk space  
+add `-y` flag to not get prompted for confirmation
+
+```bash
+gcloud compute instances start 'ubu20' --zone 'us-central1-a' -y
 ```
 
 ## 4 Managing buckets / storage
@@ -207,3 +215,4 @@ Things to be aware of:
 * It might take up to 48 hours to start seeing Google Cloud pricing data in your data table
 * After you enable pricing export, the pricing data applicable to your Cloud Billing account is exported to BigQuery **once each day**.
 * If you're interested in exporting resource-level cost data to BigQuery for analysis, consider enabling the [detailed usage cost data](https://cloud.google.com/billing/docs/how-to/export-data-bigquery-tables#detailed-usage-cost-data-schema).
+* It is a lot cheaper to keep an image of an instance, than having an instance remain in `terminated` mode. Disk storage is more expensive than image storage. So create an image directly after having run an instance, and you can delete it if you do not plan to use it within a couple of days.
