@@ -250,6 +250,11 @@ if __name__ == "__main__":
     # view = view.sort_values('cost')
     view = view.sort_index()
 
+    # groupby day, to get cost per day
+    df['dt'] = df.index
+    by_day = df.groupby(df.dt.dt.floor('d'))
+    by_day['cost'].sum()
+
     # get a summary of top (summed) costs
     by_service = view.groupby('service_description')
     by_description = view.groupby('sku_description')
