@@ -75,7 +75,8 @@ class MonitorBilling:
 
             past_month_cost = df[cost_col].sum()
             delta_cost = past_month_cost - self.last_cost if self.niter > 0 else 0
-            past_day_cost = df.loc[day_ago:, cost_col].sum()
+            past_day_sel = df.loc[day_ago:, :]
+            past_day_cost = past_day_sel[cost_col].sum() if len(past_day_sel) > 0 else 0
 
             nrow = len(df)
             NROW = 'nrow' if nrow == 1 else 'nrows'
