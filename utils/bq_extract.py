@@ -22,7 +22,7 @@ import pandas as pd
 
 from google.cloud import bigquery
 
-from rarc.utils import unnest_dict, assign_cols
+from rarc.utils.misc import unnest_dict, assign_cols
 
 logger = logging.getLogger(__name__) # 'root' 'main'
 
