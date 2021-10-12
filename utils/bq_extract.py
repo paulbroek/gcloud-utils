@@ -22,6 +22,8 @@ import pandas as pd
 
 from google.cloud import bigquery
 
+from rarc.utils import unnest_dict, assign_cols
+
 logger = logging.getLogger(__name__) # 'root' 'main'
 
 BILLING_TABLE_NAME = 'BILLING_TABLE_NAME'
@@ -44,7 +46,6 @@ def query_stackoverflow(cl):
 
     return query_job.result()  # Waits for job to complete.
 
-
 # @timet
 def query_billing_all(cl):
 
@@ -57,7 +58,6 @@ def query_billing_all(cl):
     )
 
     return query_job.result()
-
 
 # @timet
 def query_billing(cl, cols='*', orderBy='export_time', n=100_000):
@@ -75,7 +75,6 @@ def query_billing(cl, cols='*', orderBy='export_time', n=100_000):
     )
 
     return query_job.result()
-
 
 # @timet
 def query_billing_nonzero(cl, cols='*', orderBy='export_time', n=100_000):
@@ -96,7 +95,6 @@ def query_billing_nonzero(cl, cols='*', orderBy='export_time', n=100_000):
 
     return query_job.result()
 
-
 # @timet
 def to_pandas(res, ixCol: Optional='export_time') -> pd.DataFrame:
 
@@ -110,58 +108,10 @@ def to_pandas(res, ixCol: Optional='export_time') -> pd.DataFrame:
 
     return df
 
-
 def cost_by_month(df) -> pd.DataFrame:
 
-    return df
-
-
-def unnest_dict(df, col, key, assign=True) -> Union[str, Tuple[str, pd.Series]]:
-    """ converts 
-
-        project  {'id': 'ob-train', 'number': '653959998010'
-
-        to 
-
-        project_id      'ob_train'
-    """
-
-    assert isinstance(df, pd.DataFrame)
-
-    if len(df) > 0:
-        assert col in df.columns
-        some_row = df.iloc[0]
-        assert isinstance(some_row[col], dict)
-        assert key in some_row[col], f"{key=} not in {some_row[col]}"
-
-    newColName = f'{col}_{key}'
-
-    newCol = df[col].map(lambda x: x[key])
-
-    if assign:
-        df = df.assign(**{newColName: newCol})
-
-        print(f'{df.shape=}')
-
-        return newColName
-
-    return newColName, newCol
-
-
-def assign_cols(df, unnestList) -> Tuple[List[str], pd.DataFrame]:
-    """
-        convert list of ('col','key') tuples to list of new col names and assigned dataframe
-    """
-
-    assert isinstance(df, pd.DataFrame)
-    assert isinstance(unnestList, list)
-
-    nameColTuples = list(map(lambda x: unnest_dict(df, *x, assign=False), unnestList))
-
-    addedCols = [n[0] for n in nameColTuples]
-
-    return addedCols, df.assign(**dict(nameColTuples))
-
+    raise NotImplementedError
+    # return df
 
 def reduce_view(df) -> pd.DataFrame:
     """ return a compact view of df, since BigQuery returns 19 columns and nested dictionaries """
@@ -190,7 +140,6 @@ def reduce_view(df) -> pd.DataFrame:
 
     return view
 
-
 class ArgParser():
     """ create CLI parser """
 
@@ -216,7 +165,7 @@ class ArgParser():
 
 if __name__ == "__main__":
     
-    from rarc.utils.decorators import timeit, timet
+    # from rarc.utils.decorators import timeit, timet
     from rarc.utils.log import setup_logger
 
     parser      = ArgParser.get_parser()
