@@ -16,15 +16,15 @@
         conda activate py38
         export GOOGLE_APPLICATION_CREDENTIALS="/home/paul/Downloads/service-account-file.json" && ipy monitor_billing.py -i
 
-        ipy monitor_billing.py -i -- --usd_threshold 0 --seconds 5 -v info
+        ipy monitor_billing.py -i -- --usd_threshold 0      --seconds 5     -v info
+        ipy monitor_billing.py -i -- --usd_threshold 0.5    --seconds 3600  -v info
 """
 
-from typing import Optional, Union, Tuple, List
+# from typing import Optional, Union, Tuple, List
 import argparse
 import logging
 from time import sleep
-
-import pandas as pd
+from datetime import datetime, timedelta
 
 from google.cloud import bigquery
 
@@ -33,44 +33,55 @@ from rarc.utils.log import setup_logger
 # from rarc.slack_notifications import slack_message
 from bq_extract import query_billing_nonzero, to_pandas
 
-logger = logging.getLogger(__name__) # 'root' 'main'
-
-
 from slackclient import SlackClient
+
+logger = logging.getLogger(__name__) # 'root' 'main'
 
 token = 'SLACK_API_KEY'
 sc = SlackClient(token)
     
+
 # slack_message('test123', '#general')
 def slack_message(message, channel):
     sc.api_call('chat.postMessage', channel=channel, 
                 text=message, username='Paul',
                 icon_emoji=':robot_face:')
 
-
 class MonitorBilling:
+    """ MonitorBilling class 
+        
+        application class that can query Big Query continuously, 
+        and log updates on total cost and/or cost per day
+    """
 
     def __init__(self):
 
         self.last_cost = 0
         self.niter = 0
+        self.cost_col = 'cost'
+        self.df = None
 
     def run(self):
         
         while True:
 
-            ress = query_billing_nonzero(client, cols='*', orderBy='usage_end_time', n=100_000)
+            cost_col = self.cost_col
+            now = datetime.utcnow()
+            month_ago = now - timedelta(days=30)
+            day_ago = now - timedelta(days=1)
+            ress = query_billing_nonzero(client, cols='*', orderBy='usage_end_time', fromDate=month_ago, n=100_000)
 
-            df = to_pandas(ress, ixCol='usage_end_time')
+            self.df = df = to_pandas(ress, ixCol='usage_end_time')
 
-            total_cost = df.cost.sum()
-            delta_cost = total_cost - self.last_cost if self.niter > 0 else 0
+            past_month_cost = df[cost_col].sum()
+            delta_cost = past_month_cost - self.last_cost if self.niter > 0 else 0
+            past_day_cost = df.loc[day_ago:, cost_col].sum()
 
             nrow = len(df)
             NROW = 'nrow' if nrow == 1 else 'nrows'
 
             logger.info(f'got {nrow} {NROW}')
-            logger.info(f'total cost is {total_cost:.2f} $')
+            logger.info(f'{past_month_cost=:.2f} $   {past_day_cost=:.2f} $')
 
             # possible notify
             if delta_cost >= args.usd_threshold:
@@ -79,10 +90,9 @@ class MonitorBilling:
 
                 slack_message(msg, '#notifications')
 
-            self.last_cost = total_cost
+            self.last_cost = past_month_cost
             sleep(args.seconds)
             self.niter += 1
-
 
 class ArgParser():
     """ create CLI parser """

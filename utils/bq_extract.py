@@ -17,6 +17,7 @@
 from typing import Optional, Union, Tuple, List
 import argparse
 import logging
+from datetime import datetime
 
 import pandas as pd
 
@@ -77,20 +78,22 @@ def query_billing(cl, cols='*', orderBy='export_time', n=100_000):
     return query_job.result()
 
 # @timet
-def query_billing_nonzero(cl, cols='*', orderBy='export_time', n=100_000):
+def query_billing_nonzero(cl, cols='*', orderBy='export_time', fromDate=datetime(2016,1,1), n=100_000):
     """ query all nonzero billing rows """
 
     assert isinstance(cols, str)
     assert isinstance(n, int)
 
+    sqlFromDate = fromDate.strftime("%Y-%m-%d %H:%M:%S")
+
     query_job = cl.query(
         """
         SELECT {} 
         FROM {}
-        WHERE cost > 0
+        WHERE ({} >= TIMESTAMP('{}')) AND (cost > 0)
         ORDER BY {} ASC
         LIMIT {}
-        """.format(cols, BILLING_TABLE_NAME, orderBy, n)
+        """.format(cols, BILLING_TABLE_NAME, orderBy, sqlFromDate, orderBy, n)
     )
 
     return query_job.result()
