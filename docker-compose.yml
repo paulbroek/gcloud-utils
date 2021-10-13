@@ -17,8 +17,8 @@ services:
               python -c 'while 1: pass'
 
     environment:
-     - GOOGLE_APPLICATION_CREDENTIALS="/google_config/service-account-file.json"
+     - GOOGLE_APPLICATION_CREDENTIALS="/root/google_config/service-account-file.json"
 
     volumes:
      - /home/${USER}/repos/gcloud-utils/utils:/mnt_src
-     - /home/${USER}/Downloads/service-account-file.json:/google_config/service-account-file.json
+     - /home/${USER}/Downloads/service-account-file.json:/root/google_config/service-account-file.json
