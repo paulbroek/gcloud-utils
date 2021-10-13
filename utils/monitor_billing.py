@@ -8,16 +8,19 @@
 
         - autodetect large delta billing events
         - use argparse for CLI args (done)
-        - also alert on high daily amounts
-        - now you use while loop to poll bigquery continuously, or is it better to send trigger events from bq when delta_sum_costs exceeds a threshold
+        - also alert on high daily amounts (done)
+        - now you're using while loop to poll bigquery continuously, but maybe it is better to send trigger events from bq directly when delta_sum_costs exceeds a threshold
 
     RUN:
 
         conda activate py38
         export GOOGLE_APPLICATION_CREDENTIALS="/home/paul/Downloads/service-account-file.json" && ipy monitor_billing.py -i
+    
+        for testing:
+            ipy monitor_billing.py -i -- --usd_threshold 0      --seconds 5     -v info
 
-        ipy monitor_billing.py -i -- --usd_threshold 0      --seconds 5     -v info
-        ipy monitor_billing.py -i -- --usd_threshold 0.5    --seconds 3600  -v info
+        to run in production (see 'docker-compose.yml' one dir up):
+            ipy monitor_billing.py -i -- --usd_threshold 0.5    --seconds 3600  -v info
 """
 
 # from typing import Optional, Union, Tuple, List
@@ -26,14 +29,13 @@ import logging
 from time import sleep
 from datetime import datetime, timedelta
 
+from slackclient import SlackClient
 from google.cloud import bigquery
 
 # from rarc.utils.decorators import timeit, timet
 from rarc.utils.log import setup_logger
 # from rarc.slack_notifications import slack_message
 from bq_extract import query_billing_nonzero, to_pandas
-
-from slackclient import SlackClient
 
 logger = logging.getLogger(__name__) # 'root' 'main'
 
@@ -63,9 +65,9 @@ class MonitorBilling:
 
     def run(self):
         
+        cost_col = self.cost_col
         while True:
 
-            cost_col = self.cost_col
             now = datetime.utcnow()
             month_ago = now - timedelta(days=30)
             day_ago = now - timedelta(days=1)
