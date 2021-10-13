@@ -12,9 +12,9 @@ services:
             - -c
             - |
               cd /mnt_src
-              # python monitor_billing.py  --usd_threshold 0.5  --seconds 7200  -v info
+              python monitor_billing.py  --usd_threshold 0.5  --seconds 7200  -v info
               # export GOOGLE_APPLICATION_CREDENTIALS="/google_config/service-account-file.json" && python monitor_billing.py  --usd_threshold 0.5  --seconds 7200  -v info
-              python -c 'while 1: pass'
+              # python -c 'while 1: pass'
 
     # environment:
     #  - GOOGLE_APPLICATION_CREDENTIALS="/google_config/service-account-file.json"
