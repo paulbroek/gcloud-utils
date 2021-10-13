@@ -179,8 +179,8 @@ if __name__ == "__main__":
     logger      = setup_logger(cmdLevel=log_level, saveFile=args.file, savePandas=1, fmt=log_fmt, multiLine=1)
 
 
-    # client = bigquery.Client() # works only when runing export=GOOGLE_APP.. before running python
-    client = bigquery.Client(credentials=os.environ['GOOGLE_APPLICATION_CREDENTIALS']) # works with docker-compose environment var
+    client = bigquery.Client() # works only when runing export=GOOGLE_APP.. before running python
+    # client = bigquery.Client(credentials=os.environ['GOOGLE_APPLICATION_CREDENTIALS']) # works with docker-compose environment var
 
     # ress = query_billing(client, cols='*', n=100_000)
     ress = query_billing_nonzero(client, cols='*', orderBy='usage_end_time', n=100_000)
