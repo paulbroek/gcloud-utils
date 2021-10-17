@@ -23,7 +23,7 @@ import pandas as pd
 
 from google.cloud import bigquery
 
-from rarc.utils.misc import unnest_dict, assign_cols
+from rarc.utils.misc import unnest_dict, unnest_assign_cols
 
 logger = logging.getLogger(__name__) # 'root' 'main'
 
@@ -134,7 +134,7 @@ def reduce_view(df) -> pd.DataFrame:
     unnestList = [('project','id'), ('service','description'), ('sku','description'), ]
 
     # apply unnest_dict to al parameters in unnestList
-    addedCols, df = assign_cols(df, unnestList)
+    addedCols, df = unnest_assign_cols(df, unnestList)
 
     # what cols to keep
     keepCols = addedCols + ['usage_hours', 'cost', 'cumCost']
