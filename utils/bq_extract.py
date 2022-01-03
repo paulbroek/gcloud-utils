@@ -14,7 +14,7 @@
     or add the environment variable to ~/.bashrc or ~/.zshrc
 """
 
-from typing import Optional, Union, Tuple, List
+from typing import Optional # , Union, Tuple, List
 import argparse
 import logging
 from datetime import datetime
@@ -23,7 +23,7 @@ import pandas as pd
 
 from google.cloud import bigquery
 
-from rarc.utils.misc import unnest_dict, unnest_assign_cols
+from rarc.utils.misc import unnest_assign_cols # ,unnest_dict
 
 logger = logging.getLogger(__name__) # 'root' 'main'
 
