@@ -32,8 +32,8 @@ from datetime import datetime, timedelta
 from slackclient import SlackClient
 from google.cloud import bigquery
 
-# from rarc.utils.decorators import timeit, timet
-from rarc.utils.log import setup_logger
+# from rarc_utils.decorators import timeit, timet
+from rarc_utils.log import setup_logger
 # from rarc.slack_notifications import slack_message
 from bq_extract import query_billing_nonzero, to_pandas
 
