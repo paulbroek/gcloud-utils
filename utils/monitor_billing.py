@@ -15,7 +15,7 @@ RUN:
     for testing:
         ipy monitor_billing.py -i -- --usd_threshold 0      --seconds 5     -v info
 
-    to run in production (see 'docker-compose.yml' one dir up):
+    to run in production (see `docker-compose.yml`, one dir up):
         ipy monitor_billing.py -i -- --usd_threshold 0.5    --seconds 3600  -v info
 """
 
@@ -36,8 +36,12 @@ token = "SLACK_API_KEY"
 sc = SlackClient(token)
 
 
-# slack_message('test123', '#general')
-def slack_message(message, channel):
+def slack_message(message, channel) -> None:
+    """Send message to Slack.
+
+    usage:
+        slack_message('test123', '#general')
+    """
     sc.api_call(
         "chat.postMessage",
         channel=channel,
@@ -48,9 +52,8 @@ def slack_message(message, channel):
 
 
 class MonitorBilling:
-    """MonitorBilling class
+    """MonitorBilling class, application class that can query Big Query continuously.
 
-    application class that can query Big Query continuously,
     and log updates on total cost and/or cost per day
     """
 
@@ -62,7 +65,7 @@ class MonitorBilling:
         self.df = None
 
     def run(self):
-
+        """Run the App."""
         cost_col = self.cost_col
         while True:
 
@@ -103,11 +106,11 @@ class MonitorBilling:
 
 
 class ArgParser:
-    """create CLI parser"""
+    """create CLI parser."""
 
     @staticmethod
     def get_parser():
-
+        """Add CLIs to parser."""
         CLI = argparse.ArgumentParser()
         CLI.add_argument(
             "-v",
