@@ -3,3 +3,5 @@ slackclient==1.2.1
 git+https://github.com/paulbroek/rarc-utils.git
 google-cloud-bigquery[bqstorage,pandas]
 pandas
+lz4
+coloredlogs

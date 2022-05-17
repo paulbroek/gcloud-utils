@@ -2,7 +2,10 @@ version: "3.9"
 services:
   monitor-billing:
     restart: unless-stopped
-    image: ./Dockerfile
+    build:
+      context: .
+      dockerfile: Dockerfile
+    # image: .
     # image: gcloud_env
     # image: py39_feed_env
     container_name: monitor-billing
