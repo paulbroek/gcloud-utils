@@ -1,17 +1,14 @@
-"""
-    bq_extract.py
+"""bq_extract.py, extract tables from Big Query to pandas dataframe format.
 
-    extract tables from Big Query to pandas dataframe format
-    like: billing
+like: billing
 
-    more info on how to set up gcloud service account, see github.com/paulbroek/gcloud-utils/README.md
+more info on how to set up gcloud service account, see github.com/paulbroek/gcloud-utils/README.md
 
-    run file:
+run file:
+    conda activate py38
+    export GOOGLE_APPLICATION_CREDENTIALS="/home/paul/Downloads/service-account-file.json" && ipy bq_extract.py -i
 
-        conda activate py38
-        export GOOGLE_APPLICATION_CREDENTIALS="/home/paul/Downloads/service-account-file.json" && ipy bq_extract.py -i
-
-    or add the environment variable to ~/.bashrc or ~/.zshrc
+or add the environment variable to ~/.bashrc or ~/.zshrc
 """
 
 import argparse
@@ -25,9 +22,11 @@ from rarc_utils.misc import unnest_assign_cols  # ,unnest_dict
 
 logger = logging.getLogger(__name__)  # 'root' 'main'
 
-BILLING_TABLE_NAME = (
-    "BILLING_TABLE_NAME"
-)
+# get table_name from config.yaml
+# BILLING_TABLE_NAME = (
+#     "BILLING_TABLE_NAME"
+# )
+BILLING_TABLE_NAME = 
 
 
 def query_stackoverflow(cl):
@@ -49,14 +48,14 @@ def query_stackoverflow(cl):
 
 
 # @timet
-def query_billing_all(cl):
+def query_billing_all(cl, table_name: str):
 
     query_job = cl.query(
         """
         SELECT *
-        FROM `BILLING_TABLE_NAME`
+        FROM `{}`
         ORDER BY export_time ASC
-        """
+        """.format(table_name)
     )
 
     return query_job.result()
@@ -86,8 +85,7 @@ def query_billing(cl, cols="*", orderBy="export_time", n=100_000):
 def query_billing_nonzero(
     cl, cols="*", orderBy="export_time", fromDate=datetime(2016, 1, 1), n=100_000
 ):
-    """query all nonzero billing rows"""
-
+    """Query all nonzero billing rows from BigQuery."""
     assert isinstance(cols, str)
     assert isinstance(n, int)
 
@@ -122,15 +120,8 @@ def to_pandas(res, ixCol: Optional = "export_time") -> pd.DataFrame:
     return df
 
 
-def cost_by_month(df) -> pd.DataFrame:
-
-    raise NotImplementedError
-    # return df
-
-
-def reduce_view(df) -> pd.DataFrame:
-    """return a compact view of df, since BigQuery returns 19 columns and nested dictionaries"""
-
+def reduce_view(df: pd.DataFrame) -> pd.DataFrame:
+    """Return a compact view of df, since BigQuery returns 19 columns and nested dictionaries."""
     df = df.copy()
 
     df["usage_duration"] = df["usage_end_time"] - df["usage_start_time"]
@@ -161,7 +152,7 @@ def reduce_view(df) -> pd.DataFrame:
 
 
 class ArgParser:
-    """create CLI parser"""
+    """create CLI parser."""
 
     @staticmethod
     def get_parser():
@@ -236,7 +227,7 @@ if __name__ == "__main__":
     costs.columns = costs.columns.map("_".join).str.strip("_")
 
     # display floats, not scientific numbers
-    pd.set_option("display.float_format", lambda x: "%.5f" % x)
+    pd.set_option("display.float_format", lambda x: f"{x.5f}")
     costs["cost_sum_pct"] = costs["cost_sum"] / costs["cost_sum"].sum()
 
     # usgcols = ['usage_hours_sum', 'usage_hours_max']
