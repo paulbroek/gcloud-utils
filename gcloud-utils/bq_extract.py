@@ -14,19 +14,22 @@ or add the environment variable to ~/.bashrc or ~/.zshrc
 import argparse
 import logging
 from datetime import datetime
-from typing import Optional  # , Union, Tuple, List
+from typing import Optional
 
 import pandas as pd
 from google.cloud import bigquery
-from rarc_utils.misc import unnest_assign_cols  # ,unnest_dict
+from rarc_utils.misc import load_yaml, unnest_assign_cols
 
-logger = logging.getLogger(__name__)  # 'root' 'main'
+from .settings import CONFIG_FILE
+
+logger = logging.getLogger(__name__)
 
 # get table_name from config.yaml
 # BILLING_TABLE_NAME = (
 #     "BILLING_TABLE_NAME"
 # )
-BILLING_TABLE_NAME = 
+config = load_yaml(cfgFile)
+BILLING_TABLE_NAME = config["bigquery"]["billing_table_name"]
 
 
 def query_stackoverflow(cl):
@@ -55,7 +58,9 @@ def query_billing_all(cl, table_name: str):
         SELECT *
         FROM `{}`
         ORDER BY export_time ASC
-        """.format(table_name)
+        """.format(
+            table_name
+        )
     )
 
     return query_job.result()
