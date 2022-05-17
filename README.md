@@ -130,3 +130,13 @@ bigquery:
 ```bash
 docker-compose up -d
 ```
+
+### 3.5 Run locally
+
+```bash
+pip install -U ~/repos/gcloud-utils
+
+export GCLOUD_CONFIG_FILE=/home/paul/repos/gcloud-utils/gcloud_utils/config/config.yaml && \
+export GOOGLE_APPLICATION_CREDENTIALS="/home/paul/Downloads/service-account-file.json" && \
+ipy -m gcloud_utils.monitor_billing -i -- --usd_threshold 0      --seconds 5     -v info
+```

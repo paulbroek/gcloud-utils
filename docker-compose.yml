@@ -1,24 +1,24 @@
-version: '3.9'
+version: "3.9"
 services:
-
   monitor-billing:
     restart: unless-stopped
+    image: .
     # image: gcloud_env
-    image: py39_feed_env
+    # image: py39_feed_env
     container_name: monitor-billing
-    # network_mode:  host
     command:
-            - /bin/bash
-            - -c
-            - |
-              cd /mnt_src
-              python monitor_billing.py  --usd_threshold 0.5  --seconds 7200  -v info
-              # export GOOGLE_APPLICATION_CREDENTIALS="/root/google_config/service-account-file.json" && python monitor_billing.py  --usd_threshold 0.5  --seconds 7200  -v info
-              # python -c 'while 1: pass'
+      - /bin/bash
+      - -c
+      - |
+        cd /mnt_src
+        python -m gcloud_utils.monitor_billing --usd_threshold 0.5  --seconds 7200  -v info
+        # python -c 'while 1: pass'
 
     environment:
-     - GOOGLE_APPLICATION_CREDENTIALS=/root/google_config/service-account-file.json
+      - GOOGLE_APPLICATION_CREDENTIALS=/root/google_config/service-account-file.json
+      - GCLOUD_CONFIG_FILE=/config/config.yaml
 
     volumes:
-     - /home/${USER}/repos/gcloud-utils/utils:/mnt_src
-     - /home/${USER}/Downloads/service-account-file.json:/root/google_config/service-account-file.json
+      - /home/${USER}/repos/gcloud-utils/utils:/mnt_src
+      - /home/${USER}/Downloads/service-account-file.json:/root/google_config/service-account-file.json
+      - /home/${USER}/repos/gcloud-utils/gcloud_utils/config/config.yaml:/config/config.yaml

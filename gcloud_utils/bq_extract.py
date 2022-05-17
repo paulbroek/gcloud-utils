@@ -18,20 +18,12 @@ from datetime import datetime
 from typing import Optional
 
 import pandas as pd
-from dotenv import load_dotenv
 from google.cloud import bigquery
 from rarc_utils.misc import load_yaml, unnest_assign_cols
 
 from .settings import GCLOUD_CONFIG_FILE
 
 logger = logging.getLogger(__name__)
-
-# get table_name from config.yaml
-# BILLING_TABLE_NAME = (
-#     "BILLING_TABLE_NAME"
-# )
-
-load_dotenv(".env")
 
 cfgFile = os.environ.get(GCLOUD_CONFIG_FILE)
 assert cfgFile is not None

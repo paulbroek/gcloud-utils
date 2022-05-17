@@ -12,7 +12,7 @@ requires = []
 # ]
 
 setup(
-    name="gcloud-utils",
+    name="gcloud_utils",
     version="0.0.1",
     description="gcloud utils- \
         Google Cloud utilities, tips, tricks and helper functions to interact with BigQuery, Storage and more",

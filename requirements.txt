@@ -1,5 +1,5 @@
 slackclient==1.2.1
 # google-cloud-bigquery
+git+https://github.com/paulbroek/rarc-utils.git
 google-cloud-bigquery[bqstorage,pandas]
 pandas
-python-dotenv
