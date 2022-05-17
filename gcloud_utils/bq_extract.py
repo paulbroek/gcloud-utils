@@ -22,7 +22,7 @@ from dotenv import load_dotenv
 from google.cloud import bigquery
 from rarc_utils.misc import load_yaml, unnest_assign_cols
 
-from .settings import CONFIG_FILE
+from .settings import GCLOUD_CONFIG_FILE
 
 logger = logging.getLogger(__name__)
 
@@ -33,7 +33,8 @@ logger = logging.getLogger(__name__)
 
 load_dotenv(".env")
 
-cfgFile = os.environ.get("CFG_FILE")
+cfgFile = os.environ.get(GCLOUD_CONFIG_FILE)
+assert cfgFile is not None
 config = load_yaml(cfgFile)
 
 BILLING_TABLE_NAME = config["bigquery"]["billing_table_name"]
@@ -239,7 +240,7 @@ if __name__ == "__main__":
     costs.columns = costs.columns.map("_".join).str.strip("_")
 
     # display floats, not scientific numbers
-    pd.set_option("display.float_format", lambda x: f"{x.5f}")
+    pd.set_option("display.float_format", lambda x: f"{x:.5f}")
     costs["cost_sum_pct"] = costs["cost_sum"] / costs["cost_sum"].sum()
 
     # usgcols = ['usage_hours_sum', 'usage_hours_max']
