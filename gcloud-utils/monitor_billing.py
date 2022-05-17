@@ -19,23 +19,24 @@ RUN:
         ipy monitor_billing.py -i -- --usd_threshold 0.5    --seconds 3600  -v info
 """
 
-# from typing import Optional, Union, Tuple, List
 import argparse
 import logging
+import os
 from datetime import datetime, timedelta
 from time import sleep
 
-from bq_extract import query_billing_nonzero, to_pandas
 from dotenv import load_dotenv
 from google.cloud import bigquery
 from rarc_utils.log import setup_logger
 from rarc_utils.misc import load_yaml
 from slackclient import SlackClient
 
-load_dotenv(".env")
+from .bq_extract import query_billing_nonzero, to_pandas
+
 logger = logging.getLogger(__name__)  # 'root' 'main'
+load_dotenv(".env")
 
-
+cfgFile = os.environ.get("CFG_FILE")
 config = load_yaml(cfgFile)
 token = config["slack"]["api_key"]
 

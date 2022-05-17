@@ -13,10 +13,12 @@ or add the environment variable to ~/.bashrc or ~/.zshrc
 
 import argparse
 import logging
+import os
 from datetime import datetime
 from typing import Optional
 
 import pandas as pd
+from dotenv import load_dotenv
 from google.cloud import bigquery
 from rarc_utils.misc import load_yaml, unnest_assign_cols
 
@@ -28,7 +30,12 @@ logger = logging.getLogger(__name__)
 # BILLING_TABLE_NAME = (
 #     "BILLING_TABLE_NAME"
 # )
+
+load_dotenv(".env")
+
+cfgFile = os.environ.get("CFG_FILE")
 config = load_yaml(cfgFile)
+
 BILLING_TABLE_NAME = config["bigquery"]["billing_table_name"]
 
 
