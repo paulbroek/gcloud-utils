@@ -25,13 +25,12 @@ import os
 from datetime import datetime, timedelta
 from time import sleep
 
+from bq_extract import query_billing_nonzero, to_pandas
 from dotenv import load_dotenv
 from google.cloud import bigquery
 from rarc_utils.log import setup_logger
 from rarc_utils.misc import load_yaml
 from slackclient import SlackClient
-
-from .bq_extract import query_billing_nonzero, to_pandas
 
 logger = logging.getLogger(__name__)  # 'root' 'main'
 load_dotenv(".env")

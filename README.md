@@ -111,10 +111,13 @@ vim ~/Downloads/service-account-file.json
 CONFIG_FILE=/home/paul/repos/gcloud_utils/config
 
 # config/config.yaml
-# config.yaml
+# see below
 ```
 
+`config.yaml`: \
+
 ```yaml
+# config.yaml
 slack:
     api_key: MY_SLACK_API_KEY
 
