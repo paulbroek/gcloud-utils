@@ -14,7 +14,7 @@ services:
       - -c
       - |
         cd /mnt_src
-        python -m gcloud_utils.monitor_billing --usd_threshold 0.5  --seconds 7200  -v info
+        python -m gcloud_utils.monitor_billing --usd_threshold 0.5  --seconds 14400  -v info
         # python -c 'while 1: pass'
 
     environment:
