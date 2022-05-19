@@ -5,9 +5,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    # image: .
-    # image: gcloud_env
-    # image: py39_feed_env
     container_name: monitor-billing
     command:
       - /bin/bash
