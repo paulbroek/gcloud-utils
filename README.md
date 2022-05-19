@@ -40,7 +40,7 @@ Setting the environment variable
 export GOOGLE_APPLICATION_CREDENTIALS="/home/paul/Downloads/service-account-file.json"
 ```
 
-## 2 Docker
+## 2 How to run
 
 ### 2.1 Build docker image to run monitor_billing as container
 
