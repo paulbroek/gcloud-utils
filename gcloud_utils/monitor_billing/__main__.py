@@ -82,7 +82,7 @@ class MonitorBilling:
             month_ago = now - timedelta(days=30)
             day_ago = now - timedelta(days=1)
             day_ago = day_ago.replace(tzinfo=pytz.UTC)
-            
+
             # make it timezone aware, needed for future pandas compatability
             ress = query_billing_nonzero(
                 client,
@@ -113,6 +113,8 @@ class MonitorBilling:
                 slack_message(msg, "#notifications")
 
             self.last_cost = past_month_cost
+            next_run_in_hours = args.seconds / 3600
+            logger.info(f"next run in {next_run_in_hours:.1f} hours")
             sleep(args.seconds)
             self.niter += 1
 
