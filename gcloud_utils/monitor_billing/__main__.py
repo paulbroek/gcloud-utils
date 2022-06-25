@@ -24,7 +24,9 @@ import logging
 import os
 from datetime import datetime, timedelta
 from time import sleep
+from typing import Optional
 
+import pandas as pd
 from google.cloud import bigquery
 from rarc_utils.log import setup_logger
 from rarc_utils.misc import load_yaml
@@ -65,10 +67,10 @@ class MonitorBilling:
 
     def __init__(self):
 
-        self.last_cost = 0
-        self.niter = 0
-        self.cost_col = "cost"
-        self.df = None
+        self.last_cost: float = 0
+        self.niter: int = 0
+        self.cost_col: str = "cost"
+        self.df: Optional[pd.DataFrame] = None
 
     def run(self):
         """Run the App."""

@@ -59,7 +59,7 @@ vim ~/Downloads/service-account-file.json
 
 ```bash
 # .env
-CONFIG_FILE=/home/paul/repos/gcloud_utils/config
+CONFIG_FILE=/home/paul/repos/gcloud-utils/gcloud_utils/config
 
 # config/config.yaml
 # see below

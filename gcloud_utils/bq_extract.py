@@ -18,10 +18,10 @@ from datetime import datetime
 from typing import Optional
 
 import pandas as pd
+# from .settings import GCLOUD_CONFIG_FILE
+from gcloud_utils.settings import GCLOUD_CONFIG_FILE
 from google.cloud import bigquery
 from rarc_utils.misc import load_yaml, unnest_assign_cols
-
-from .settings import GCLOUD_CONFIG_FILE
 
 logger = logging.getLogger(__name__)
 
@@ -112,7 +112,7 @@ def query_billing_nonzero(
 
 
 # @timet
-def to_pandas(res, ixCol: Optional = "export_time") -> pd.DataFrame:
+def to_pandas(res, ixCol: Optional[str] = "export_time") -> pd.DataFrame:
 
     df = res.to_dataframe()
 
@@ -151,7 +151,7 @@ def reduce_view(df: pd.DataFrame) -> pd.DataFrame:
     # what cols to keep
     keepCols = addedCols + ["usage_hours", "cost", "cumCost"]
     # view = df.loc[:, ['project_id', 'usage_hours','cost']]
-    view = df.loc[:, keepCols]
+    view: pd.DataFrame = df.loc[:, keepCols].copy()
 
     return view
 
