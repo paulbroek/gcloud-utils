@@ -27,6 +27,7 @@ from time import sleep
 from typing import Optional
 
 import pandas as pd
+import pytz
 from google.cloud import bigquery
 from rarc_utils.log import setup_logger
 from rarc_utils.misc import load_yaml
@@ -80,6 +81,9 @@ class MonitorBilling:
             now = datetime.utcnow()
             month_ago = now - timedelta(days=30)
             day_ago = now - timedelta(days=1)
+            day_ago = day_ago.replace(tzinfo=pytz.UTC)
+            
+            # make it timezone aware, needed for future pandas compatability
             ress = query_billing_nonzero(
                 client,
                 cols="*",

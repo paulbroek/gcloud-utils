@@ -14,11 +14,10 @@ or add the environment variable to ~/.bashrc or ~/.zshrc
 import argparse
 import logging
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Optional
 
 import pandas as pd
-# from .settings import GCLOUD_CONFIG_FILE
 from gcloud_utils.settings import GCLOUD_CONFIG_FILE
 from google.cloud import bigquery
 from rarc_utils.misc import load_yaml, unnest_assign_cols
@@ -197,7 +196,8 @@ if __name__ == "__main__":
     # client = bigquery.Client(credentials=os.environ['GOOGLE_APPLICATION_CREDENTIALS']) # works with docker-compose environment var
 
     # ress = query_billing(client, cols='*', n=100_000)
-    ress = query_billing_nonzero(client, cols="*", orderBy="usage_end_time", n=100_000)
+    fromDate = datetime.now() - timedelta(days=40)
+    ress = query_billing_nonzero(client, cols="*", orderBy="usage_end_time", fromDate=fromDate)
     # ress = query_billing_nonzero(client, cols='*', orderBy='export_time', n=100_000)
     # ress = query_billing_nonzero(client, cols='*', orderBy='cost', n=100_000)
     # ress = query_billing(client, cols='export_time, cost', n=100_000)

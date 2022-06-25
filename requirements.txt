@@ -5,3 +5,4 @@ google-cloud-bigquery[bqstorage,pandas]
 pandas
 lz4
 coloredlogs
+pytz
