@@ -3,14 +3,6 @@
 from setuptools import find_packages, setup
 
 requires = []
-# requires = [
-#     "yapic.json>=1.7.0",
-#     "pandas>=1.0.3",
-#     "timeago>=1.0.15",
-#     "sqlalchemy>=1.4.23",
-#     "PyYAML>=5.4.1",
-# ]
-
 setup(
     name="gcloud_utils",
     version="0.0.1",
